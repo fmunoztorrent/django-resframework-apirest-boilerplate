@@ -20,12 +20,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'nh(@n*m0m=2w5zyumdtc!hp*2g+ve2-4=9pszr72oav5@762^)'
+# SECRET_KEY = 'nh(@n*m0m=2w5zyumdtc!hp*2g+ve2-4=9pszr72oav5@762^)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
+#ALLOWED_HOSTS = []
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+SECRET_KEY = os.environ.get("SECRET_KEY")
+DEBUG = True if int(os.environ.get("DEBUG", default=0)) == 1 else False
+PRODUCTION = True if int(os.environ.get("PRODUCTION_SERVER", default=0)) == 1 else False
 
 
 # Application definition
@@ -76,9 +81,13 @@ WSGI_APPLICATION = 'cgm_api_gateway.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("SQL_USER", "user"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "3306"),
     }
 }
 
@@ -120,4 +129,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+
+##### API Configuration #####
+
+# You can use  whitelist or allow all. In dev i prefer all.
+
+""" CORS_ORIGIN_WHITELIST = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+] """
+
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Use JWT Authentication
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
+    ]
+}

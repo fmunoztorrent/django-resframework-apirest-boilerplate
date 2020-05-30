@@ -16,3 +16,10 @@ $ git clone https://github.com/fmunoztorrent/django-resframework-apirest-boilerp
 ```sh
 $ docker-compose up -d --build
 ```
+
+## Entrar al administrador
+
+Entrar a http://localhost:8000/admin
+
+Username: admin
+Password: admin
