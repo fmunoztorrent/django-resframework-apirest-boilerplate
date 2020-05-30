@@ -2,22 +2,22 @@
 
 Plantilla limpia solo con lo escencial para comenzar a programar un API REST en Django
 
-# Instalación
+### Instalación
 
 Esta guía asume que ya tienes instalado Docker y Docker Compose
 
-## Clonar Repositorio
+### Clonar Repositorio
 ```sh
 $ git clone https://github.com/fmunoztorrent/django-resframework-apirest-boilerplate.git
 ```
 
-## Iniciar entorno de desarrollo
+### Iniciar entorno de desarrollo
 
 ```sh
 $ docker-compose up -d --build
 ```
 
-## Entrar al administrador
+### Entrar al administrador
 
 Entrar a http://localhost:8000/admin
 
