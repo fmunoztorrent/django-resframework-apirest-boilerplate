@@ -1,0 +1,32 @@
+version: '3.3'
+
+services:
+
+    app:
+        build: .
+        volumes: 
+            - .:/usr/src/app
+        command: python manage.py runserver 0.0.0.0:8000
+        depends_on: 
+            - db
+        ports:
+            - '8000:8000'
+        env_file: 
+            - ./.env.dev
+        environment: 
+            MYSQL_DATABASE: 'database'
+            MYSQL_USER: 'root'
+            MYSQL_PASSWORD: 'password'
+            MYSQL_HOST: 'cgm_api_gw_db'
+
+    db:
+        image: mysql:5.7
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_DATABASE: 'database'
+            MYSQL_USER: 'root'
+            MYSQL_PASSWORD: 'password'
+            MYSQL_ROOT_PASSWORD: 'password'
+        volumes:
+            - ./mysql_data:/var/lib/mysql
